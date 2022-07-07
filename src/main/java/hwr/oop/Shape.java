@@ -2,14 +2,14 @@ package hwr.oop;
 
 public class Shape {
 
-    private int[] block1 = new int[2];
-    private int[] block2 = new int[2];
-    private int[] block3 = new int[2];
-    private int[] block4 = new int[2];
-    private int y;
-    private int x;
+    private int[] block1;
+    private int[] block2;
+    private int[] block3;
+    private int[] block4;
+    private final Rules actualRules;
 
-    Shape(String args, int y, int x) {
+    Shape(String args, int y, int x,Rules rules) {
+        actualRules = rules;
         if (args.equals("L")) {
             //begin left upper
             block1 = new int[]{y, x};
@@ -52,24 +52,24 @@ public class Shape {
             block2 = new int[]{block1[0], block1[1] - 1};
             block3 = new int[]{block1[0] - 1, block1[1] - 1};
             block4 = new int[]{block1[0] - 1, block1[1] - 2};
+        }else{
+            throw new RuntimeException("Ungültige Eingabe");
         }
     }
 
-    public int[][] getBlocks() {
-        int[][] blocks = new int[][]{block1, block2, block3, block4};
-        return blocks;
-    }
-
-    //CHANGE BONDARY TO 10
     public boolean moveToRight() {
-        //moving all blocks to right and check if they are out of boundary :D
-
+        //moving the Blocks one block to Right and check if it hits boundary or other blocks
         block1[1] = block1[1] + 1;
         block2[1] = block2[1] + 1;
         block3[1] = block3[1] + 1;
         block4[1] = block4[1] + 1;
-
-        if (block1[1] == 10 || block2[1] == 10 || block3[1] == 10 || block4[1] == 10) {
+        int[][] area = actualRules.getField();
+        //boundary and Block check
+        if (block1[1] == 10 || block2[1] == 10 || block3[1] == 10 || block4[1] == 10
+            || area[block1[0]][block1[1]] == 1
+            || area[block2[0]][block2[1]] == 1
+            || area[block3[0]][block3[1]] == 1
+            || area[block4[0]][block4[1]] == 1) {
             block1[1] = block1[1] - 1;
             block2[1] = block2[1] - 1;
             block3[1] = block3[1] - 1;
@@ -81,14 +81,20 @@ public class Shape {
     }
 
     public boolean moveToLeft() {
-        //moving all blocks to right and check if they are out of boundary :D
-
+        //moving the Blocks one block to Left and check if it hits boundary or other blocks
         block1[1] = block1[1] - 1;
         block2[1] = block2[1] - 1;
         block3[1] = block3[1] - 1;
         block4[1] = block4[1] - 1;
 
-        if (block1[1] == -1 || block2[1] == -1 || block3[1] == -1 || block4[1] == -1) {
+        int[][] area = actualRules.getField();
+
+        //boundary and Block check
+        if (block1[1] == -1 || block2[1] == -1 || block3[1] == -1 || block4[1] == -1
+            || area[block1[0]][block1[1]] == 1
+            || area[block2[0]][block2[1]] == 1
+            || area[block3[0]][block3[1]] == 1
+            || area[block4[0]][block4[1]] == 1) {
             block1[1] = block1[1] + 1;
             block2[1] = block2[1] + 1;
             block3[1] = block3[1] + 1;
@@ -100,13 +106,21 @@ public class Shape {
     }
 
     public boolean moveDown() {
-        //moving the Block one block down and check if it hits boundary
+        //moving the Blocks one block Down and check if it hits boundary or other blocks
         block1[0] = block1[0] - 1;
         block2[0] = block2[0] - 1;
         block3[0] = block3[0] - 1;
         block4[0] = block4[0] - 1;
 
-        if (block1[0] == -1 || block2[0] == -1 || block3[0] == -1 || block4[0] == -1) {
+        int[][] area = actualRules.getField();
+
+        //boundary and Block check
+        if (block1[0] == -1 || block2[0] == -1 || block3[0] == -1 || block4[0] == -1
+            || area[block4[0]][block4[1]] == 1
+            || area[block3[0]][block3[1]] == 1
+            || area[block2[0]][block2[1]] == 1
+            || area[block1[0]][block1[1]] == 1
+            ) {
             block1[0] = block1[1] + 1;
             block2[0] = block2[1] + 1;
             block3[0] = block3[1] + 1;
@@ -115,6 +129,10 @@ public class Shape {
         } else {
             return true;
         }
+    }
+
+    public int[][] getBlocks() {
+        return new int[][]{block1, block2, block3, block4};
     }
 
 }

@@ -1,27 +1,35 @@
 package hwr.oop;
 
-import java.io.Console;
-import java.io.IOException;
-import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TetrisConsole {
 
+    private Rules rules;
+
     TetrisConsole(){
-        showGamefield();
+        rules = new Rules();
+        Timer();
     }
 
+    //Code angepasst von https://www.baeldung.com/java-timer-and-timertask
+
+    public void Timer(){
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new RepeatedTask(),500,1000);
+    }
+
+    class RepeatedTask extends TimerTask {
+        public void run() {
+            System.out.println("----------");
+            showGamefield();
+            rules.Tick();
+        }
+    }
+
+    //bis hier von https://www.baeldung.com/java-timer-and-timertask
+
     public void showGamefield(){
-        Rules rules = new Rules();
-        rules.setBlockToOne(1,9);
-        rules.setBlockToOne(3,8);
-        rules.setBlockToOne(5,7);
-        rules.setBlockToOne(7,6);
-        rules.setBlockToOne(9,5);
-        rules.setBlockToOne(11,4);
-        rules.setBlockToOne(13,3);
-        rules.setBlockToOne(15,2);
-        rules.setBlockToOne(17,1);
-        rules.setBlockToOne(19,0);
         int[][] matrix = rules.getField();
         //begin at top of the matrix and go down to Zero
         for (int i = matrix.length - 1; i >= 0; i--) {
@@ -32,8 +40,4 @@ public class TetrisConsole {
         }
     }
 
-    public void refreshGamefield(){
-
-
-    }
 }

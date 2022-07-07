@@ -24,8 +24,8 @@ public class RulesTest {
         String[] tetrisBlocksNames = new String[] {"L","J","I","O","T","Z","S"};
 
         for (int i = 0; i < tetrisBlocksNames.length; i++) {
-            Shape shape = new Shape(tetrisBlocksNames[i],20,5 );
-            if(shape.getBlocks().equals(rules.spawnShape().getBlocks())){
+            Shape shape = new Shape(tetrisBlocksNames[i],19,5 ,rules);
+            if(Arrays.deepEquals(shape.getBlocks(), rules.spawnShape().getBlocks())){
                 Assertions.assertArrayEquals(shape.getBlocks(),rules.spawnShape().getBlocks());
             }
         }
@@ -64,7 +64,7 @@ public class RulesTest {
         for(int i = 0; i <= 9; i++) {
             rules.setBlockToOne(0,i);
         }
-        Assertions.assertTrue(rules.clearOneRow());
+        Assertions.assertTrue(rules.clearRowWithOnes());
     }
 
     @Test
@@ -74,6 +74,57 @@ public class RulesTest {
             rules.setBlockToOne(0,i);
             rules.setBlockToOne(2,i);
         }
-        Assertions.assertTrue(rules.clearOneRow());
+        Assertions.assertTrue(rules.clearRowWithOnes());
     }
+
+    //The Test shows that blocks are dropping and the rules-class creates new Shapes by itself
+    @Test
+    public void moveShapeDownTest(){
+        Rules rules = new Rules();
+        //place a block so the shape will collide agaist the block and should stop
+        rules.setBlockToOne(15,5);
+        Shape firstShape = rules.getFallingShape();
+        //Shapes spawn at y:19 and x:5
+        rules.moveShapeDown();
+        rules.moveShapeDown();
+        rules.moveShapeDown();
+        Shape secondShape = rules.getFallingShape();
+        Assertions.assertNotEquals(firstShape,secondShape);
+    }
+
+    @Test
+    public void tickTest(){
+        Rules rules = new Rules();
+        rules.setBlockToOne(15,5);
+        Shape firstShape = rules.getFallingShape();
+        rules.Tick();
+        rules.Tick();
+        rules.Tick();
+        Shape secondShape = rules.getFallingShape();
+        Assertions.assertNotEquals(firstShape,secondShape);
+    }
+
+    @Test
+    public void testClearRowWithOnes(){
+        Rules rules = new Rules();
+        for(int i = 0; i <= 8; i++) {
+            rules.setBlockToOne(0,i);
+            rules.setBlockToOne(2,i);
+        }
+        Assertions.assertFalse(rules.clearRowWithOnes());
+    }
+
+    @Test
+    public void testifnewShapeisCreated(){
+        Rules rules = new Rules();
+        rules.Tick();
+        rules.Tick();
+        Shape firstShape = rules.getFallingShape();
+        for (int i = 0; i < rules.getField().length; i++){
+            rules.Tick();
+        }
+        Assertions.assertNotEquals(firstShape,rules.getFallingShape());
+
+    }
+
 }

@@ -1,0 +1,97 @@
+Dies ist leider ein nicht fertiges Projekt,
+doch ich möchte euch hier kurz erklären wie der ungefähre Denkansatz war sodass ihr auch den Code einiger Maßen
+nachvollziehen könnt.
+
+-----------------------------------------------------------------------------------------------------------------------
+
+DISCLAIMER: Dieses Projekt wurde alleine geschrieben weil mein Arbeitskollege die Uni abgebrochen hat und ich nur
+            zwei Wochen Zeit für das Projekt hatte. Bei einer zeitverlängerung/ früheren Ankündigung meines Kollegen
+            wäre ich bestimmt fertig geworden. Dies soll keine Ausrede sein sondern eine Erklärung warum das ein halb
+            fertiges Projekt ist.
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Funktionen die das Spiel leider nicht hat:
+-User Input(Steuerung der Shapes)
+-Rotieren der Blöcke funktioniert/exisitert  nicht
+-Spielabbruch bei vollem Spielfeld
+-Vielleicht noch eine Punkteanzeige
+-Bug bei Stapelung von Shapes
+-Bug beim Fallen der Blöcke und erreichung vom Boden (Shapes verschwinden leider)
+
+
+Klassen die existieren:
+    Shapes ( Die Blöcke die es in Tetris gibt und deren Funktionilatität ),
+    Rules(regelt die Positionen der Shapes auf dem Spielfeld und setzt die Regeln um wie Reihe säubern falls Reihe voll)
+    TetrisConsole ( Sollte das Spielfeld anzeigen und den UserInput weiterleiten )
+    Main ( erzeugt das Spiel )
+
+-----------------------------------------------------------------------------------------------------------------------
+Shape:
+
+Jeder Block in Tetris hat ein bestimmtes Muster
+Dabei entsprechen die Shapes Buchstaben wie im Wiki angegeben: https://tetris.fandom.com/wiki/Tetromino
+Die Blöcke wären "L,J,I,O,S,Z,T".
+In dem Konstruktor habe ich vier Übergabe werte:
+    1. die Art des Shapes(hier mit einem Char/String ausgedrückt)
+    2. die Startposition auf der Y-Achse
+    3. die Startposition auf der X-Achse
+    ANMERKUNG: Im Gesamten Code kommt in den Matrizen Y zuerst und dann X also
+    int[Y][X] Matrix
+   4. die Klasse Rules wird mitübergeben sodass die immer ansprechbar ist.
+
+   Erklärung für die Blöcke: meist wird der Höchste Block/einer der höchsten Blöcke als MainBlock verwendet
+   und davon folgt die Anordnung der anderen Blöcke.
+
+Shapes können sich bewegen und geben dabei Feedback ob sie sich nun Bewegen durften oder nicht
+hier umgesetzt mit "moveToLeft;moveToRight;moveDown"
+In den Movemethoden wird zuerst bewegt und überprüft ob es korrekt ist, wenn nicht so wird der Schritt rückgängig
+gemacht
+
+-----------------------------------------------------------------------------------------------------------------------
+Rules:
+
+In Rules sollen die Regeln und das Spielfeld erzeugt und umgesetzt werden
+Regeln sind ansich sehr simple:
+    1. ist eine Reihe voll soll es wieder gecleared werden und alles drüber ein block tiefergesetz werden
+    2. Blöcke dürfen sich nicht gegenseitig berühren (Umgesetzt in Shapes)
+    3. falls ein Block nicht gespawnt werden kann weil das Feld voll ist sollte das Spiel abbrechen ( nicht umgesetzt)
+
+erklärung der Methoden:
+    Set + Shape/Block + To + One/Zero sind Methoden die ganze Blöcke/Shapes auf 0 oder 1 im Spielfeld setzten können.
+
+    clearRowWithOnes soll das ganze Feld überprüfen ob eine Reihe im Feld voller einsen ist, ist dies der Fall so soll
+                    die Reihe "gelöscht" werden und das oberliegende Feld ein drunter geschoben werden,
+                    dabei soll aber trotzdem die Reihen drüber überprüft werden.
+
+    moveShapeDown dies bewegt die Shape einen Block nach unten und setzt die alten positionen vom Shape auf 0 und die
+                neuen auf 1, sodass bei mehrere Ausführung eine fallende Bewegung vom Shape angezeigt wird
+
+    Tick dies soll ein Tick eines Games sein, bei jedem Tick soll der Block immer fallen
+
+    spawnShape erzeugt ein Random Shape auf dem Spielfeld
+
+    Rules/Konstuktor erzeugt das Feld am Anfang und setzt alle Werte auf 0
+                Zur Verständnis: Das Standart Tetrisfeld enthält 20 Blöcke Höhe und 10 Blöcke Horizontal
+                dabei hat der Array[20][10] Werte doch die Spielfelder gehen von Y:0-19 & X:0-9
+
+-----------------------------------------------------------------------------------------------------------------------
+TetrisConsole:
+
+Diese Klasse sollte sich nur um die Ausgabe des Feldes und die Eingabe des Users kümmern.
+
+Erklärung der Methoden:
+    showGameField zeigt dem Nutzer auf korrekter Weise das Spielfeld an (Zuerst Y:19 bis Y:0 etc.)
+
+    Timer + class Repeated Task: ist eine Variante einen Timer zu erstellen der sich ständig wiederholt
+                    Quelle: https://www.baeldung.com/java-timer-and-timertask
+
+    Konstruktor/TetrisConsole erzeugt ein Objekt der Regeln und lässt es jede Sekunde wiederholen (jede sek ein Tick)
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Shape und Rules haben eine 100% Coverage (manchmal Bugt die IDE dann steht da nur 90%/80%(IDE restarten hilft oft dabei);
+FAKT ist es hat insgesamt eine 88% Code-Coverage) doch leider fehlt mir nun die Zeit für die Vollendung des Projektes
+Ich hoffe die Erklärung ist etwas Hilfreicher da nicht jeder Codeschnipsel sofort zu verstehen ist
+
+
