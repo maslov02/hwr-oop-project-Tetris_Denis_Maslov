@@ -23,7 +23,7 @@ public class TetrisConsole {
         public void run() {
             System.out.println("----------");
             showGamefield();
-            rules.Tick();
+            rules.tick();
         }
     }
 

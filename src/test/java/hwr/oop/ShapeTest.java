@@ -491,7 +491,7 @@ public class ShapeTest {
         Assertions.assertTrue(shape.moveToLeft());
     }
 
-    //------Test if Shapes are moveable, Moveway
+    //------Test if Shapes are moveable, Downway
 
     @Test
     public void testIfShapeGoesDownL(){

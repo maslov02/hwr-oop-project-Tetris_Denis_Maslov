@@ -77,6 +77,17 @@ public class RulesTest {
         Assertions.assertTrue(rules.clearRowWithOnes());
     }
 
+    //This should return false because Gamefield has just 9 ones;and not 10 ones
+    @Test
+    public void testClearRowWithNineOnes(){
+        Rules rules = new Rules();
+        for(int i = 0; i <= 8; i++) {
+            rules.setBlockToOne(0,i);
+            rules.setBlockToOne(2,i);
+        }
+        Assertions.assertFalse(rules.clearRowWithOnes());
+    }
+
     //The Test shows that blocks are dropping and the rules-class creates new Shapes by itself
     @Test
     public void moveShapeDownTest(){
@@ -97,31 +108,21 @@ public class RulesTest {
         Rules rules = new Rules();
         rules.setBlockToOne(15,5);
         Shape firstShape = rules.getFallingShape();
-        rules.Tick();
-        rules.Tick();
-        rules.Tick();
+        rules.tick();
+        rules.tick();
+        rules.tick();
         Shape secondShape = rules.getFallingShape();
         Assertions.assertNotEquals(firstShape,secondShape);
     }
 
     @Test
-    public void testClearRowWithOnes(){
-        Rules rules = new Rules();
-        for(int i = 0; i <= 8; i++) {
-            rules.setBlockToOne(0,i);
-            rules.setBlockToOne(2,i);
-        }
-        Assertions.assertFalse(rules.clearRowWithOnes());
-    }
-
-    @Test
     public void testifnewShapeisCreated(){
         Rules rules = new Rules();
-        rules.Tick();
-        rules.Tick();
+        rules.tick();
+        rules.tick();
         Shape firstShape = rules.getFallingShape();
         for (int i = 0; i < rules.getField().length; i++){
-            rules.Tick();
+            rules.tick();
         }
         Assertions.assertNotEquals(firstShape,rules.getFallingShape());
 

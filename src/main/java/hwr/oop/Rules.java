@@ -20,7 +20,7 @@ public class Rules {
     }
 
     //This Method should repeat as fast as the game works, like once a second
-    public void Tick(){
+    public void tick(){
         moveShapeDown();
         clearRowWithOnes();
     }
